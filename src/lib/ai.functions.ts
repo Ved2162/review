@@ -65,27 +65,45 @@ Mention realistic details that fit a ${data.businessTypeLabel} specifically — 
 Return strict JSON in this shape:
 {"reviews":[{"text":"..."},{"text":"..."}]}`;
 
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        temperature: 0.7,
-        messages: [
-          { role: "system", content: sys },
-          { role: "user", content: user },
-        ],
-      }),
-    });
+    // Retry logic with exponential backoff for rate limiting
+    let res: Response | null = null;
+    let retries = 0;
+    const maxRetries = 3;
+    
+    while (retries < maxRetries) {
+      res = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          temperature: 0.7,
+          messages: [
+            { role: "system", content: sys },
+            { role: "user", content: user },
+          ],
+        }),
+      });
 
-    if (!res.ok) {
-      const text = await res.text();
-      if (res.status === 429) throw new Error("Too many requests. Please wait a moment.");
-      if (res.status === 402) throw new Error("AI credits exhausted. Please add credits.");
-      throw new Error(`AI error: ${res.status} ${text.slice(0, 200)}`);
+      if (res.status === 429 && retries < maxRetries - 1) {
+        // Rate limited — wait and retry
+        const waitTime = Math.pow(2, retries) * 1000; // 1s, 2s, 4s
+        console.warn(`Rate limited (429). Retrying in ${waitTime}ms...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        retries++;
+        continue;
+      }
+
+      break; // Success or non-retryable error
+    }
+
+    if (!res || !res.ok) {
+      const text = await res?.text() ?? "";
+      if (res?.status === 429) throw new Error("Too many requests. Please wait a moment.");
+      if (res?.status === 402) throw new Error("AI credits exhausted. Please add credits.");
+      throw new Error(`AI error: ${res?.status ?? "unknown"} ${text.slice(0, 200)}`);
     }
 
     const json = await res.json();
