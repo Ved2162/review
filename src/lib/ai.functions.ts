@@ -16,8 +16,8 @@ const Input = z.object({
 export const generateReviews = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => Input.parse(d))
   .handler(async ({ data }) => {
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) throw new Error("Missing LOVABLE_API_KEY");
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
 
     const langName = {
       english: "English",
@@ -65,19 +65,19 @@ Mention realistic details that fit a ${data.businessTypeLabel} specifically — 
 Return strict JSON in this shape:
 {"reviews":[{"text":"..."},{"text":"..."}]}`;
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Lovable-API-Key": apiKey,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "gpt-4o-mini",
+        temperature: 0.7,
         messages: [
           { role: "system", content: sys },
           { role: "user", content: user },
         ],
-        response_format: { type: "json_object" },
       }),
     });
 

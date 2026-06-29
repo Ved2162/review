@@ -113,7 +113,7 @@ See [`.env.example`](./.env.example) for the full list. Summary:
 | `SUPABASE_URL` | Server only | Same value as VITE_SUPABASE_URL |
 | `SUPABASE_PUBLISHABLE_KEY` | Server only | Same value as the VITE_ one |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server only | Supabase service role key for server admin operations |
-| `LOVABLE_API_KEY` | Server only (auto-injected on Lovable Cloud) | AI Gateway key — never commit |
+| `OPENAI_API_KEY` | Server only | OpenAI API key for ChatGPT review generation — never commit |
 
 On Lovable Cloud these are managed for you; you only set them manually for self-hosting.
 
