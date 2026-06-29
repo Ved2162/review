@@ -1,12 +1,3 @@
-# Supabase Setup for ReviewGenie
-
-If your Supabase project is missing the `public.restaurants` table, run this SQL in the Supabase SQL Editor.
-
-This app expects the following schema and functions.
-
-> Copy only the SQL below; do not include the surrounding Markdown fences like ````sql````.
-
-```sql
 CREATE TABLE IF NOT EXISTS public.restaurants (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL CHECK (char_length(name) >= 1 AND char_length(name) <= 120),
@@ -56,17 +47,3 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.increment_restaurant_scans(TEXT) TO anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.increment_restaurant_reviews(TEXT) TO anon, authenticated;
-```
-
-## How to apply
-
-1. Open your Supabase project.
-2. Go to the `SQL Editor`.
-3. Paste only the SQL contents from `SUPABASE_SETUP.sql` and run it.
-4. Confirm the `public.restaurants` table exists in the table browser.
-
-## Notes
-
-- This file is intended for new Supabase projects or projects where the schema was not created yet.
-- The app uses Supabase table and function names exactly as shown above.
-- If you deploy in Vercel, make sure the project environment variables are also set to the correct Supabase project values.
