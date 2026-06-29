@@ -13,7 +13,9 @@ GRANT ALL ON public.restaurants TO service_role;
 
 ALTER TABLE public.restaurants ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "QR visitors can read restaurants"
+DROP POLICY IF EXISTS "QR visitors can read restaurants" ON public.restaurants;
+
+CREATE POLICY "QR visitors can read restaurants"
 ON public.restaurants
 FOR SELECT
 TO anon, authenticated
