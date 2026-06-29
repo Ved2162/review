@@ -4,8 +4,22 @@ CREATE TABLE IF NOT EXISTS public.restaurants (
   google_review_url TEXT NOT NULL CHECK (google_review_url ~ '^https?://'),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   scans INTEGER NOT NULL DEFAULT 0 CHECK (scans >= 0),
-  reviews_generated INTEGER NOT NULL DEFAULT 0 CHECK (reviews_generated >= 0)
+  reviews_generated INTEGER NOT NULL DEFAULT 0 CHECK (reviews_generated >= 0),
+  business_type TEXT NOT NULL DEFAULT 'restaurant',
+  custom_business_type TEXT,
+  keywords TEXT[] NOT NULL DEFAULT '{}',
+  avoid_words TEXT[] NOT NULL DEFAULT '{}',
+  brand_tone TEXT NOT NULL DEFAULT 'friendly',
+  active BOOLEAN NOT NULL DEFAULT true
 );
+
+ALTER TABLE public.restaurants
+  ADD COLUMN IF NOT EXISTS business_type TEXT NOT NULL DEFAULT 'restaurant',
+  ADD COLUMN IF NOT EXISTS custom_business_type TEXT,
+  ADD COLUMN IF NOT EXISTS keywords TEXT[] NOT NULL DEFAULT '{}',
+  ADD COLUMN IF NOT EXISTS avoid_words TEXT[] NOT NULL DEFAULT '{}',
+  ADD COLUMN IF NOT EXISTS brand_tone TEXT NOT NULL DEFAULT 'friendly',
+  ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT true;
 
 GRANT SELECT ON public.restaurants TO anon;
 GRANT SELECT ON public.restaurants TO authenticated;
