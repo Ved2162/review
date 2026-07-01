@@ -2,7 +2,7 @@
 // Keeps the app fully client-side & minimal.
 //
 // Storage keys and admin credentials are centralized in `src/constants/app.ts`.
-// We re-export ADMIN_EMAIL / ADMIN_PASSWORD here so existing imports keep working.
+// We re-export admin credential constants here so existing imports keep working.
 
 import {
   STORAGE_KEYS,
