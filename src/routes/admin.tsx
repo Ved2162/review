@@ -77,11 +77,7 @@ function Login({ onLogin }: { onLogin: () => void }) {
     const normalizeValue = (value: string) => value.replace(/['"\s]/g, "").toLowerCase();
     const normalizedEmail = normalizeValue(email);
     const normalizedPassword = normalizeValue(password);
-    const validCredentials = [
-      [ADMIN_EMAIL, ADMIN_PASSWORD],
-      ["web.kingasterisk@gmail.com", "8980K!ng@33558980"],
-      ["admin@gmail.com", "admin@2162"],
-    ].some(([storedEmail, storedPassword]) => {
+    const validCredentials = [[ADMIN_EMAIL, ADMIN_PASSWORD]].some(([storedEmail, storedPassword]) => {
       const expectedEmail = normalizeValue(storedEmail);
       const expectedPassword = normalizeValue(storedPassword);
       return normalizedEmail === expectedEmail && normalizedPassword === expectedPassword;
