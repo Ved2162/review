@@ -74,16 +74,18 @@ function Login({ onLogin }: { onLogin: () => void }) {
   function submit(e: React.FormEvent) {
     e.preventDefault();
 
-    const normalizedEmail = email.trim().toLowerCase();
-    const normalizedPassword = password.trim();
+    const normalizeValue = (value: string) => value.replace(/['"\s]/g, "").toLowerCase();
+    const normalizedEmail = normalizeValue(email);
+    const normalizedPassword = normalizeValue(password);
     const validCredentials = [
       [ADMIN_EMAIL, ADMIN_PASSWORD],
       ["web.kingasterisk@gmail.com", "8980K!ng@33558980"],
       ["admin@gmail.com", "admin@2162"],
-    ].some(
-      ([storedEmail, storedPassword]) =>
-        normalizedEmail === storedEmail.toLowerCase() && normalizedPassword === storedPassword,
-    );
+    ].some(([storedEmail, storedPassword]) => {
+      const expectedEmail = normalizeValue(storedEmail);
+      const expectedPassword = normalizeValue(storedPassword);
+      return normalizedEmail === expectedEmail && normalizedPassword === expectedPassword;
+    });
 
     if (validCredentials) {
       setAdminLoggedIn(true);
