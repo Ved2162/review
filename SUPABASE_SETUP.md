@@ -6,7 +6,7 @@ This app expects the following schema and functions.
 
 > Copy only the SQL below; do not include the surrounding Markdown fences like ````sql````.
 
-```sql
+```sql  
 CREATE TABLE IF NOT EXISTS public.restaurants (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL CHECK (char_length(name) >= 1 AND char_length(name) <= 120),

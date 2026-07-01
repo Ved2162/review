@@ -17,8 +17,8 @@ export const STORAGE_KEYS = {
 } as const;
 
 // ---- Admin credentials (legacy — see note above) ----------------------------
-export const ADMIN_EMAIL = "admin@gmail.com";
-export const ADMIN_PASSWORD = "admin@2162";
+export const ADMIN_EMAIL = "web.kingasterisk@gmail.com";
+export const ADMIN_PASSWORD = "8980K!ng@33558980";
 
 // ---- Defaults ---------------------------------------------------------------
 export const DEFAULT_BRAND_TONE = "friendly";
